@@ -8,20 +8,23 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Camera m_Camera;
     [SerializeField] Rigidbody rb;
 
+    [Header("플레이어 이동관련")]
     [SerializeField] int walkSpeed = 5; //걷는 속도
     [SerializeField] int runSpeed = 8; //뛰는 속도
-    [SerializeField] float jumpForced = 3f; //점프 힘
-
     [SerializeField] float horizontal;
     [SerializeField] float vertical;
 
+    [SerializeField] float jumpForced = 3f; //점프 힘
+
+    [Header("이동방향")]
     [SerializeField] Vector3 moveDirection;
 
+    [Header("상태")]
     [SerializeField] bool isRun; //뛰는 상태
-
-    [SerializeField] float jumpCoolTime;
     [SerializeField] bool isJump;//점프 상태
     [SerializeField] bool isGround;//땅에 있는 상태
+
+    [SerializeField] float jumpCoolTime;
     
     private void Awake()
     {
@@ -59,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
             speed = isRun ? 1f : 0.5f;
         }
 
-        m_Animator.SetFloat("Speed", speed);
+        m_Animator.SetFloat("Speed", speed, 0.1f, Time.deltaTime);
     }
 
     private void FixedUpdate()
