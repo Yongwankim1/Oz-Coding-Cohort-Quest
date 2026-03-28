@@ -34,7 +34,7 @@ public class CameraMovement : MonoBehaviour
 
     [Header("1인칭 온오프")]
     [SerializeField] bool isFirstView;
-    [SerializeField] GameObject crossHair;
+    [SerializeField] UnityEngine.GameObject crossHair;
     private void Start()
     {
         realCamera = Camera.main.transform;
