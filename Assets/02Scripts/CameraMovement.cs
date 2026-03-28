@@ -63,9 +63,9 @@ public class CameraMovement : MonoBehaviour
         Quaternion rot = Quaternion.Euler(rotY, rotX, 0);
         transform.rotation = rot;
     }
-    private void LateUpdate()
+    private void FixedUpdate()
     {
-        transform.position = Vector3.MoveTowards(transform.position, currentTarget.position,cameraSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, currentTarget.position, cameraSpeed * Time.fixedDeltaTime);
 
         finalDir = transform.TransformPoint(dirNormalized * maxDistance);
 
@@ -85,7 +85,7 @@ public class CameraMovement : MonoBehaviour
                 finalDistance = maxDistance;
             }
         }
-        realCamera.localPosition = Vector3.Lerp(realCamera.localPosition, dirNormalized * finalDistance, cameraSpeed * Time.deltaTime);
+        realCamera.localPosition = Vector3.Lerp(realCamera.localPosition, dirNormalized * finalDistance, cameraSpeed * Time.fixedDeltaTime);
 
 
     }

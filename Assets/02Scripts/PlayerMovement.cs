@@ -3,65 +3,72 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    //카메라가 보는 방향을 위해
     [SerializeField] Animator m_Animator;
     [SerializeField] Camera m_Camera;
     [SerializeField] Rigidbody rb;
 
     [Header("플레이어 이동관련")]
-    [SerializeField] int walkSpeed = 5; //걷는 속도
-    [SerializeField] int runSpeed = 8; //뛰는 속도
+    [SerializeField] float walkSpeed = 5f;
+    [SerializeField] float runSpeed = 8f;
     [SerializeField] float horizontal;
     [SerializeField] float vertical;
-
-    [SerializeField] float jumpForced = 3f; //점프 힘
+    [SerializeField] float jumpForced = 3f;
 
     [Header("이동방향")]
     [SerializeField] Vector3 moveDirection;
 
     [Header("상태")]
-    [SerializeField] bool isRun; //뛰는 상태
-    [SerializeField] bool isJump;//점프 상태
-    [SerializeField] bool isGround;//땅에 있는 상태
+    [SerializeField] bool isRun;
+    [SerializeField] bool isJump;
+    [SerializeField] bool isGround;
     [SerializeField] bool isMove = true;
-    [SerializeField] float jumpCoolTime;
-    
+    [SerializeField] float jumpCoolTime = 0.2f;
+
     private void Awake()
     {
         m_Animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         m_Camera = Camera.main;
+
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
     }
+
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && isGround && !isJump)
+        if (Input.GetKeyDown(KeyCode.Space) && isGround && !isJump && isMove)
         {
             Jump();
             m_Animator.SetTrigger("Jump");
         }
-        if(isMove)
+
+        if (isMove)
         {
             horizontal = Input.GetAxisRaw("Horizontal");
             vertical = Input.GetAxisRaw("Vertical");
         }
-
+        else
+        {
+            horizontal = 0f;
+            vertical = 0f;
+        }
 
         isRun = Input.GetKey(KeyCode.LeftShift);
 
-        Vector3 cameraFoward = m_Camera.transform.forward;
+        Vector3 cameraForward = m_Camera.transform.forward;
         Vector3 cameraRight = m_Camera.transform.right;
 
-        cameraFoward.y = 0f;
+        cameraForward.y = 0f;
         cameraRight.y = 0f;
 
-        cameraFoward.Normalize();
+        cameraForward.Normalize();
         cameraRight.Normalize();
 
-        moveDirection = (cameraFoward * vertical + cameraRight * horizontal).normalized;
+        moveDirection = (cameraForward * vertical + cameraRight * horizontal).normalized;
 
+        float inputMagnitude = new Vector2(horizontal, vertical).magnitude;
         float speed = 0f;
 
-        if (moveDirection != Vector3.zero)
+        if (inputMagnitude > 0.1f)
         {
             speed = isRun ? 1f : 0.5f;
         }
@@ -71,13 +78,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        int moveSpeed = isRun ? runSpeed : walkSpeed;
-        rb.MovePosition(rb.position + moveDirection * moveSpeed * Time.fixedDeltaTime);
+        float currentMoveSpeed = isRun ? runSpeed : walkSpeed;
 
-        if(moveDirection != Vector3.zero)
+        Vector3 nextPosition = rb.position + moveDirection * currentMoveSpeed * Time.fixedDeltaTime;
+        if (isMove)
+            rb.MovePosition(nextPosition);
+        if (moveDirection != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, moveSpeed * Time.fixedDeltaTime));
+            Quaternion nextRotation = Quaternion.Slerp(rb.rotation, targetRotation, 10f * Time.fixedDeltaTime);
+            rb.MoveRotation(nextRotation);
         }
     }
 
@@ -91,13 +101,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground"))
         {
             isGround = true;
-            m_Animator.SetBool("isGround", isGround);
         }
     }
-
+    public void CantMove() { isMove = false; }
+    public void CanMove() {isMove = true; }
     IEnumerator JumpCoolTime()
     {
         yield return new WaitForSeconds(jumpCoolTime);
