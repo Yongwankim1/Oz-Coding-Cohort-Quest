@@ -7,6 +7,7 @@ public class WeaponCollider : MonoBehaviour
     [SerializeField] HashSet<IDamageable> targetsName = new HashSet<IDamageable>();
     [SerializeField] int damage = 0;
     [SerializeField] PlayerAttack playerAttack;
+    [SerializeField] LayerMask targetLayer;
     private void Awake()
     {
         Init();
@@ -28,6 +29,8 @@ public class WeaponCollider : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        if (((1 << other.gameObject.layer) & targetLayer) == 0) return;
+
         IDamageable damageable = null;
         other.TryGetComponent<IDamageable>(out damageable);
         if (damageable == null || targetsName.Contains(damageable)) return;

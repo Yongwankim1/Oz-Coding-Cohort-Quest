@@ -49,13 +49,12 @@ public class HealingItem : MonoBehaviour, IInteractable
         {
             GameObject go = Instantiate(effectPrefab, position, Quaternion.identity, transform);
             effect = go.GetComponent<ParticleSystem>();
+            healCoroutine = StartCoroutine(HealStart(player));
         }
         else
         {
-            if (effect == null) return;
-            effect.Play();
+            Debug.Log("ÀÌ¹Ì Èú¸µ Áß");
         }
-        healCoroutine = StartCoroutine(HealStart(player));
     }
     IEnumerator HealStart(PlayerInteract player)
     {
@@ -72,12 +71,13 @@ public class HealingItem : MonoBehaviour, IInteractable
 
     void OnTriggerExit(Collider other)
     {
-        if(other.CompareTag("Player")||healCoroutine != null)
+        if(other.CompareTag("Player") && healCoroutine != null)
         {
             StopCoroutine(healCoroutine);
             healCoroutine = null;
             buffZone.radius = deactiveRadius;
             effect.Stop();
+            effect = null;
         }
     }
 }

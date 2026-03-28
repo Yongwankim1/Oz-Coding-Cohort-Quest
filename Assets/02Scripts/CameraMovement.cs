@@ -63,7 +63,7 @@ public class CameraMovement : MonoBehaviour
         Quaternion rot = Quaternion.Euler(rotY, rotX, 0);
         transform.rotation = rot;
     }
-    private void FixedUpdate()
+    private void LateUpdate()
     {
         transform.position = Vector3.MoveTowards(transform.position, currentTarget.position, cameraSpeed * Time.fixedDeltaTime);
 

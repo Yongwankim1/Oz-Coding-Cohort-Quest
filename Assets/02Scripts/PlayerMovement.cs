@@ -29,8 +29,6 @@ public class PlayerMovement : MonoBehaviour
         m_Animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         m_Camera = Camera.main;
-
-        rb.interpolation = RigidbodyInterpolation.Interpolate;
     }
 
     private void Update()

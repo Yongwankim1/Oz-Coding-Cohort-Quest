@@ -59,6 +59,6 @@ public class CharacterHP : MonoBehaviour, IDamageable
 
     void Die()
     {
-
+        Destroy(gameObject,3f);
     }
 }
