@@ -1,45 +1,45 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class CharacterHP : MonoBehaviour, IDamageable
 {
-    [SerializeField] int currentHP;
-    [SerializeField] int maxHP;
-    [SerializeField] Animator m_animator;
-    [SerializeField] Slider hpBar;
+    [SerializeField] protected int currentHP;
+    [SerializeField] protected int maxHP;
+    [SerializeField] protected Animator m_animator;
+    [SerializeField] protected Slider hpBar;
+    [SerializeField] protected bool isHit;
+
     public int MaxHP => maxHP;
     public bool IsDead => currentHP <= 0;
     void Awake()
     {
         Init();
     }
-    void Init()
+    public virtual void Init()
     {
+        isHit = false;
         currentHP = maxHP;
         m_animator = GetComponent<Animator>();
         HPBarUpdate();
     }
-    void LateUpdate()
-    {
-        if (hpBar != null)
-        {
-            hpBar.transform.forward = Camera.main.transform.forward;
-        }
-    }
-    public void TakeDamage(int damage)
+
+    public virtual void TakeDamage(int damage)
     {
         if (damage <= 0) return;
         if (IsDead) return;
+        hpBar.gameObject.SetActive(true);
         currentHP -= damage;
         HPBarUpdate();
-        Debug.Log($"{gameObject.name}이 데미지 받음{damage} || 남은체력 {currentHP}");
         m_animator.SetTrigger("Hit");
         currentHP = Mathf.Clamp(currentHP, 0, maxHP);
-        if (currentHP == 0)
+        if (IsDead)
         {
             Die();
         }
+        Debug.Log($"{gameObject.name}이 데미지 받음{damage} || 남은체력 {currentHP}");
     }
+
 
     void HPBarUpdate()
     {
