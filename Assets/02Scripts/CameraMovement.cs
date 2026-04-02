@@ -34,14 +34,21 @@ public class CameraMovement : MonoBehaviour
 
     [Header("1인칭 온오프")]
     [SerializeField] bool isFirstView;
-    [SerializeField] UnityEngine.GameObject crossHair;
+    [SerializeField] GameObject crossHair;
+
+    [Header("커서 잠금")]
+    [SerializeField] bool isLockCursor;
     private void Start()
     {
         realCamera = Camera.main.transform;
         dirNormalized = realCamera.localPosition.normalized;
         currentTarget = thirdView;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        if (isLockCursor)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+
     }
 
     private void Update()
