@@ -1,17 +1,15 @@
+using NUnit.Framework.Interfaces;
 using UnityEngine;
 
 public class PlayerEquipment : MonoBehaviour
 {
-    [SerializeField] ItemData helmetData;
-    [SerializeField] ItemData bodyData;
-    [SerializeField] ItemData shoesData;
-    [SerializeField] ItemData weaponData;
-
     [SerializeField] EquipmentSlotUI helmetSlot;
     [SerializeField] EquipmentSlotUI bodySlot;
     [SerializeField] EquipmentSlotUI shoesSlot;
     [SerializeField] EquipmentSlotUI weaponSlot;
 
+    [SerializeField] PlayerAttack playerAttack;
+    [SerializeField] PlayerHP playerHP;
     private void Awake()
     {
         Initialized();
@@ -23,30 +21,29 @@ public class PlayerEquipment : MonoBehaviour
         if (bodySlot == null) Debug.LogWarning("바디슬롯과 연결되어있지 않습니다");
         if (shoesSlot == null) Debug.LogWarning("신발슬롯과 연결되어있지 않습니다");
         if (weaponSlot == null) Debug.LogWarning("무기슬롯과 연결되어있지 않습니다");
-        
-        helmetData = new ItemData();
-        bodyData = new ItemData();
-        shoesData = new ItemData();
-        weaponData = new ItemData();
     }
 
-    public void UnEquipItem(string itemID, EquipmentSlotUI slot)
+    public void EquipItem(string itemID, ItemType itemType, out string UnEquipItemID)
     {
-        slot.UnEquip();
-    }
-    public void EquipItem(string itemID, out string outItemID)
-    {
-        outItemID = null;
-
-        ItemCatalogManager.Instance.TryGetItemData(itemID, out ItemData itemData);
-        Debug.Log(itemID + "교환 시도");
-        switch (DragAndDropManager.Instance.CurrentSlotType)
+        if (itemType == ItemType.Weapon)
         {
-            case ItemType.Weapon: weaponData = itemData; weaponSlot.DrawSlot(itemID, out outItemID); break;
-            case ItemType.Head: helmetData = itemData; helmetSlot.DrawSlot(itemID, out outItemID); break;
-            case ItemType.Body: bodyData = itemData; bodySlot.DrawSlot(itemID, out outItemID); break;
-            case ItemType.Shoes: shoesData = itemData; shoesSlot.DrawSlot(itemID, out outItemID); break;
-            default: break;
+            weaponSlot.EquipItem(itemID,out UnEquipItemID);
+        }
+        else if (itemType == ItemType.Body)
+        {
+            bodySlot.EquipItem(itemID, out UnEquipItemID);
+        }
+        else if (itemType == ItemType.Head)
+        {
+            helmetSlot.EquipItem(itemID, out UnEquipItemID);
+        }
+        else if (itemType == ItemType.Shoes)
+        {
+            shoesSlot.EquipItem(itemID, out UnEquipItemID);
+        }
+        else
+        {
+            UnEquipItemID = null;
         }
     }
 }

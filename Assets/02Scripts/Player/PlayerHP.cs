@@ -12,4 +12,10 @@ public class PlayerHP : CharacterHP
     {
         base.TakeDamage(damage);
     }
+
+    public void EquipItem(int amount)
+    {
+        changeHP(amount);
+    }
+
 }

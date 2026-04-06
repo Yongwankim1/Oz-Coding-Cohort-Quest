@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 public class EquipmentSlotUI : MonoBehaviour
 {
-
     [SerializeField] private ItemType equipType;
     [SerializeField] Sprite noneEquipSlotSprite;
     [SerializeField] Sprite equipSlotSprite;
@@ -26,29 +25,60 @@ public class EquipmentSlotUI : MonoBehaviour
         iconImage.sprite = null;
         iconImage.gameObject.SetActive(false);
     }
-    public void UnEquip()
-    {
-        slotImage.sprite = noneEquipSlotSprite;
-        iconImage.sprite = null;
-        iconImage.gameObject.SetActive(false);
-        currentitemID = null;
-    }
-    public void DrawSlot(string itemID,out string currentitemID)
-    {
-        Debug.Log(itemID + "°¡ µé¾î¿È");
-        currentitemID = null;
-        string equipItemID = itemID;
 
+    public void EquipItem(string equipItemID, out string unEquipItemID)
+    {
         Initialize();
-        
-        if (!ItemCatalogManager.Instance.TryGetItemData(equipItemID, out ItemData itemData))
+        unEquipItemID = currentitemID;
+        currentitemID = equipItemID;
+        ItemCatalogManager.Instance.TryGetItemData(equipItemID, out var data);
+        if (equipItemID == null)
         {
             return;
         }
-        currentitemID = this.currentitemID;
-        this.currentitemID = equipItemID;
+        iconImage.sprite = data.ItemIcon;
         slotImage.sprite = equipSlotSprite;
-        iconImage.sprite = itemData.ItemIcon;
         iconImage.gameObject.SetActive(true);
     }
+    //public void ChangeEquip(string itemID)
+    //{
+    //    currentitemID = null;
+    //    string equipItemID = itemID;
+
+    //    Initialize();
+
+    //    if (!ItemCatalogManager.Instance.TryGetItemData(equipItemID, out ItemData itemData))
+    //    {
+    //        return;
+    //    }
+    //    currentitemID = equipItemID;
+    //    slotImage.sprite = equipSlotSprite;
+    //    iconImage.sprite = itemData.ItemIcon;
+    //    iconImage.gameObject.SetActive(true);
+    //}
+    //public void UnEquip()
+    //{
+    //    slotImage.sprite = noneEquipSlotSprite;
+    //    iconImage.sprite = null;
+    //    iconImage.gameObject.SetActive(false);
+    //    currentitemID = null;
+    //}
+    //public void DrawSlot(string itemID,out string currentitemID)
+    //{
+    //    Debug.Log(itemID + "°¡ µé¾î¿È");
+    //    currentitemID = null;
+    //    string equipItemID = itemID;
+
+    //    Initialize();
+        
+    //    if (!ItemCatalogManager.Instance.TryGetItemData(equipItemID, out ItemData itemData))
+    //    {
+    //        return;
+    //    }
+    //    currentitemID = this.currentitemID;
+    //    this.currentitemID = equipItemID;
+    //    slotImage.sprite = equipSlotSprite;
+    //    iconImage.sprite = itemData.ItemIcon;
+    //    iconImage.gameObject.SetActive(true);
+    //}
 }

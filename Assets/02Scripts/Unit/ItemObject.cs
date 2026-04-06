@@ -24,6 +24,7 @@ public struct ItemData
     public string Description;
     public int MaxStack;
     public Sprite ItemIcon;
+    public int Value;
 }
 [CreateAssetMenu(fileName = "New Item",menuName = "Item/Item Object")]
 public class ItemObject : ScriptableObject

@@ -19,3 +19,4 @@ MonoBehaviour:
     Description: Body
     MaxStack: 1
     ItemIcon: {fileID: 21300000, guid: 1befe8a669b036c45a53887e863cdd0c, type: 3}
+    Value: 30

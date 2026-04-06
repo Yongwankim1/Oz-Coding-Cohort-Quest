@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public struct GridData
 {
@@ -14,51 +15,64 @@ public class PlayerInventoryGrid : MonoBehaviour
     public GridData[,] InventoryGrid => inventoryGrid;
     public event Action OnSlotChangedAction;
     [SerializeField] private PlayerInventory playerInventory;
+    [SerializeField] private PlayerEquipment equipment;
+
     private void Awake()
     {
         if(playerInventory == null)
-        playerInventory = GetComponent<PlayerInventory>();
+            playerInventory = GetComponent<PlayerInventory>();
+
+        if(equipment == null)
+            equipment = GetComponent<PlayerEquipment>();
     }
     public void Initialzed(int row, int col)
     {
         inventoryGrid = new GridData[row, col];
     }
-    /// <summary>
-    /// 슬롯 체인지
-    /// </summary>
-    public void ChangeSlotItemId(int row, int col, int changeRow, int changeCol)
+    //인벤토리 안에서 슬롯 바꿀때
+    public void ChangeSlot(int dragRow, int dragCol, int dropRow, int dropCol)
     {
-        if(row < 0 || col < 0 || row > inventoryGrid.GetLength(0) - 1 || col > inventoryGrid.GetLength(1) - 1) return;
-        if (changeCol < 0 || changeRow < 0 || changeRow > inventoryGrid.GetLength(0) - 1 || changeCol > inventoryGrid.GetLength(1) - 1) return;
-        GridData gridTargetData = inventoryGrid[row, col];
-        GridData gridData = inventoryGrid[changeRow, changeCol];
+        if(dragRow < 0 || dragCol < 0 || dragRow > inventoryGrid.GetLength(0) - 1 || dragCol > inventoryGrid.GetLength(1) - 1) return;
+        if (dropCol < 0 || dropRow < 0 || dropRow > inventoryGrid.GetLength(0) - 1 || dropCol > inventoryGrid.GetLength(1) - 1) return;
+        GridData gridTargetData = inventoryGrid[dragRow, dragCol];
+        GridData gridData = inventoryGrid[dropRow, dropCol];
 
-        inventoryGrid[row, col] = gridData;
-        inventoryGrid[changeRow, changeCol] = gridTargetData;
+        inventoryGrid[dragRow, dragCol] = gridData;
+        inventoryGrid[dropRow, dropCol] = gridTargetData;
 
         OnSlotChangedAction?.Invoke();
     }
 
-    public void ChangeSlotItemId(string dragitemId,int amount ,int dropRow, int dropCol,out string itemID)
+    //인벤토리에서 드래그로 아이템 장착할때
+    public void EquipItemID(int dragRow, int dragCol, string itemID, ItemType currentItemType)
     {
-        itemID = null;
-        if(dropRow < 0 || dropCol < 0 || dropRow > inventoryGrid.GetLength(0) - 1 || dropCol > inventoryGrid.GetLength(1)) return;
-        if(!ItemCatalogManager.Instance.TryGetItemData(dragitemId, out ItemData itemData))
+        if (ItemCatalogManager.Instance.TryGetItemData(itemID, out var data))
         {
-            return;
+            if (data.Type != currentItemType) return;
         }
-        itemID = inventoryGrid[dropRow, dropCol].ItemID;
-        inventoryGrid[dropRow, dropCol].ItemID = itemData.ItemID;
-        inventoryGrid[dropRow, dropCol].MaxCount = itemData.MaxStack;
-        inventoryGrid[dropRow, dropCol].Count = amount;
-        if (!string.IsNullOrEmpty(itemID))
+        GridData gridData = inventoryGrid[dragRow,dragCol];
+        
+        equipment.EquipItem(gridData.ItemID,data.Type ,out string UnEquipItemID);
+
+        if(string.IsNullOrEmpty(UnEquipItemID)) SetGridData(dragRow, dragCol, UnEquipItemID, 0);
+        else
         {
-            playerInventory.RemoveItem(itemID, 1);
+            SetGridData(dragRow, dragCol, UnEquipItemID, 1);
         }
-        playerInventory.AddItem(dragitemId,amount);
         OnSlotChangedAction?.Invoke();
     }
+    //장비에서 드래그로 아이템 장착해제 또는 변경
+    public void EquipItemID(string dragItemID,int dropRow, int DropCol)
+    {
+        ItemCatalogManager.Instance.TryGetItemData(dragItemID, out var data);
 
+        GridData gridData = inventoryGrid[dropRow,DropCol];
+        SetGridData(dropRow, DropCol, dragItemID, 1);
+
+        equipment.EquipItem(gridData.ItemID,data.Type ,out string _);
+        OnSlotChangedAction?.Invoke();
+    }
+    //아이템 삭제
     public void SetRemoveItemGrid(string itemId,int amount,int row, int col)
     {
         if(string.IsNullOrEmpty(itemId)) return;
@@ -73,7 +87,17 @@ public class PlayerInventoryGrid : MonoBehaviour
             inventoryGrid[row, col] = new GridData();
         }
     }
-
+    private void SetGridData(int row, int col, string itemID, int amount)
+    {
+        GridData gridData = new GridData();
+        if(ItemCatalogManager.Instance.TryGetItemData(itemID, out var data))
+        {
+            gridData.ItemID = data.ItemID;
+            gridData.Count = amount;
+            gridData.MaxCount = data.MaxStack;
+        }
+        inventoryGrid[row, col] = gridData;
+    }
     public int SetAddGrid(string itemID, int amount)
     {
         if (!ItemCatalogManager.Instance.TryGetItemData(itemID, out ItemData itemData))

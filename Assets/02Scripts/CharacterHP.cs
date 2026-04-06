@@ -6,6 +6,8 @@ public class CharacterHP : MonoBehaviour, IDamageable
 {
     [SerializeField] protected int currentHP;
     [SerializeField] protected int maxHP;
+    [SerializeField] protected int defaultMaxHP;
+    [SerializeField] protected int equipHP;
     [SerializeField] protected Animator m_animator;
     [SerializeField] protected Slider hpBar;
     [SerializeField] protected bool isHit;
@@ -19,11 +21,16 @@ public class CharacterHP : MonoBehaviour, IDamageable
     public virtual void Init()
     {
         isHit = false;
+        maxHP = defaultMaxHP + equipHP;
         currentHP = maxHP;
         m_animator = GetComponent<Animator>();
         HPBarUpdate();
     }
-
+    protected void changeHP(int amount)
+    {
+        equipHP = amount;
+        HPBarUpdate();
+    }
     public virtual void TakeDamage(int damage)
     {
         if (damage <= 0) return;
@@ -32,7 +39,7 @@ public class CharacterHP : MonoBehaviour, IDamageable
         currentHP -= damage;
         HPBarUpdate();
         m_animator.SetTrigger("Hit");
-        currentHP = Mathf.Clamp(currentHP, 0, maxHP);
+        currentHP = Mathf.Clamp(currentHP, 0, maxHP + equipHP);
         if (IsDead)
         {
             Die();
@@ -46,7 +53,7 @@ public class CharacterHP : MonoBehaviour, IDamageable
     {
         if (hpBar != null)
         {
-            hpBar.value = (float) currentHP / maxHP;
+            hpBar.value = (float) currentHP / (maxHP + equipHP);
         }
     }
     public void Heal(int amount)
@@ -54,7 +61,7 @@ public class CharacterHP : MonoBehaviour, IDamageable
         if (amount <= 0) return;
         if (IsDead) return;
         currentHP += amount;
-        currentHP = Mathf.Min(currentHP, maxHP);
+        currentHP = Mathf.Min(currentHP, maxHP + equipHP);
         HPBarUpdate();
         if (isDebug)
             Debug.Log($"{gameObject.name}이 {amount}만큼 회복 | 현재 체력 {currentHP}");

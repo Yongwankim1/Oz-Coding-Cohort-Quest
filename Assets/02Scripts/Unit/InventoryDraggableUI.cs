@@ -22,9 +22,9 @@ public class InventoryDraggableUI : MonoBehaviour, IBeginDragHandler, IDragHandl
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
-        DragAndDropManager.Instance.DragingSlot.x = inventorySlotUI.Row;
-        DragAndDropManager.Instance.DragingSlot.y = inventorySlotUI.Col;
-        DragAndDropManager.Instance.DragData = inventorySlotUI.GridData;
+        DragAndDropManager.Instance.DragingSlot = new Vector2(inventorySlotUI.Row, inventorySlotUI.Col);
+        DragAndDropManager.Instance.DragType = DropType.Inventory;
+        DragAndDropManager.Instance.dragingItemID = inventorySlotUI.ItemID;
 
         previousParent = transform.parent;
 

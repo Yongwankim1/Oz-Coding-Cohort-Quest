@@ -8,8 +8,9 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] InputAction mouseAttack;
     [SerializeField] int AttackCount = 0;
 
-    [SerializeField] float defaultdamage = 0;
+    [SerializeField] float defaultDamage = 0;
     [SerializeField] float currentDamage = 0;
+    [SerializeField] float equipDamage = 0;
     public float Dmaage => currentDamage;
     [SerializeField] WeaponCollider weapon;
     private void Awake()
@@ -18,10 +19,15 @@ public class PlayerAttack : MonoBehaviour
     }
     void Initialize()
     {
-        currentDamage = defaultdamage;
+        currentDamage = defaultDamage;
         m_animator = GetComponent<Animator>();
         mouseAttack.Enable();
     }
+    public void EquipWeapon(float amount)
+    {
+        equipDamage = amount;
+    }
+
     private void Update()
     {
         if (mouseAttack.WasPerformedThisFrame())
@@ -49,7 +55,7 @@ public class PlayerAttack : MonoBehaviour
     }
     public void LastAttack()
     {
-        currentDamage = defaultdamage * 1.3f;
+        currentDamage = (defaultDamage + equipDamage) * 1.3f;
     }
     public void StatAttack()
     {
@@ -58,7 +64,7 @@ public class PlayerAttack : MonoBehaviour
     public void EndAttack()
     {
         weapon.EndAttack();
-        currentDamage = defaultdamage;
+        currentDamage = (defaultDamage + equipDamage);
     }
 
 }

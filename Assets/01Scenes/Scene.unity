@@ -632,8 +632,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1766606090}
   m_HandleRect: {fileID: 1766606089}
   m_Direction: 2
-  m_Value: 0.9982504
-  m_Size: 0.6785992
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1246,6 +1246,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHP
   currentHP: 0
   maxHP: 1000
+  defaultMaxHP: 0
+  equipHP: 0
   m_animator: {fileID: 0}
   hpBar: {fileID: 1511191257}
   isHit: 0
@@ -2146,8 +2148,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ScrollRect
   m_Content: {fileID: 1682006054}
   m_Horizontal: 0
-  m_Vertical: 0
-  m_MovementType: 1
+  m_Vertical: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -2879,8 +2881,9 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
   AttackCount: 0
-  defaultdamage: 15
+  defaultDamage: 0
   currentDamage: 0
+  equipDamage: 0
   weapon: {fileID: 1340921147}
 --- !u!1 &611401890
 GameObject:
@@ -6334,6 +6337,7 @@ GameObject:
   - component: {fileID: 1682006054}
   - component: {fileID: 1682006055}
   - component: {fileID: 1682006056}
+  - component: {fileID: 1682006057}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -6357,8 +6361,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -166, y: 195}
-  m_SizeDelta: {x: 332, y: 573.7626}
+  m_AnchoredPosition: {x: -166, y: 194.67737}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1682006055
 MonoBehaviour:
@@ -6401,6 +6405,20 @@ MonoBehaviour:
   inventoryGrid: {fileID: 5866666020035417761}
   slotPrefab: {fileID: 3565588036131575032, guid: f20c7ae0992d8a24886045eb2c0483a8, type: 3}
   parentTransform: {fileID: 1682006054}
+--- !u!114 &1682006057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1682006053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
+  m_HorizontalFit: 1
+  m_VerticalFit: 1
 --- !u!1 &1707762210 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7859597006823311159, guid: 11f1bd16d0da2b64daaf4de74d13437b, type: 3}
@@ -10595,7 +10613,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHP
   currentHP: 0
-  maxHP: 300
+  maxHP: 0
+  defaultMaxHP: 300
+  equipHP: 0
   m_animator: {fileID: 0}
   hpBar: {fileID: 743406979}
   isHit: 0
@@ -10619,6 +10639,7 @@ MonoBehaviour:
     Description: 
     MaxStack: 0
     ItemIcon: {fileID: 0}
+    Value: 0
   bodyData:
     Type: 0
     ItemID: 
@@ -10626,6 +10647,7 @@ MonoBehaviour:
     Description: 
     MaxStack: 0
     ItemIcon: {fileID: 0}
+    Value: 0
   shoesData:
     Type: 0
     ItemID: 
@@ -10633,6 +10655,7 @@ MonoBehaviour:
     Description: 
     MaxStack: 0
     ItemIcon: {fileID: 0}
+    Value: 0
   weaponData:
     Type: 0
     ItemID: 
@@ -10640,10 +10663,13 @@ MonoBehaviour:
     Description: 
     MaxStack: 0
     ItemIcon: {fileID: 0}
+    Value: 0
   helmetSlot: {fileID: 277590327}
   bodySlot: {fileID: 645511202}
   shoesSlot: {fileID: 666151701}
   weaponSlot: {fileID: 849970096}
+  playerAttack: {fileID: 583471941}
+  playerHP: {fileID: 5866666020035417759}
 --- !u!114 &5866666020035417761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10672,7 +10698,7 @@ MonoBehaviour:
   inputReader: {fileID: 0}
   inventoryGrid: {fileID: 5866666020035417761}
   rowCount: 5
-  columnCount: 5
+  columnCount: 10
 --- !u!114 &5866666020035417763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12291,6 +12317,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHP
   currentHP: 0
   maxHP: 1000
+  defaultMaxHP: 0
+  equipHP: 0
   m_animator: {fileID: 0}
   hpBar: {fileID: 731502421}
   isHit: 0

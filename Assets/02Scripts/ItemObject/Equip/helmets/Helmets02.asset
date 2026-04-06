@@ -19,3 +19,4 @@ MonoBehaviour:
     Description: helmet
     MaxStack: 1
     ItemIcon: {fileID: 21300000, guid: 36847db775f7b8f4f9b010ac87533505, type: 3}
+    Value: 50
