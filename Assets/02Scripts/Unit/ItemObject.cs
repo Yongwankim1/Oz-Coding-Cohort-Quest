@@ -9,7 +9,7 @@ public enum ItemType
     Body,
     Shoes,
 
-    Consume,
+    HPPotion,
 
     Material,
     Quest

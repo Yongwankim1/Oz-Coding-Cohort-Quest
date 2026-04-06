@@ -27,6 +27,12 @@ public class InventorySlotClick : MonoBehaviour, IPointerClickHandler
     {
         if(eventData.button == PointerEventData.InputButton.Right)
         {
+            ItemType itemType = ItemCatalogManager.Instance.GetItemType(inventorySlotUI.ItemID);
+            if (itemType == ItemType.HPPotion)
+            {
+                ///TODO:: 포션 사용 메서드 구현
+                return;
+            }
             Debug.Log("우클릭 감지");
             if (inventorySlotUI.ItemID == null) return;
             DragAndDropManager.Instance.DragType = DropType.Inventory;
