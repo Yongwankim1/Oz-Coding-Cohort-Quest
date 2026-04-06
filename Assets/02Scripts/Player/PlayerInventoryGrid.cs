@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public struct GridData
 {
@@ -51,12 +50,12 @@ public class PlayerInventoryGrid : MonoBehaviour
             if (data.Type != currentItemType) return;
         }
         GridData gridData = inventoryGrid[dragRow,dragCol];
-        
+        playerInventory.RemoveItem(gridData.ItemID, 1);
         equipment.EquipItem(gridData.ItemID,data.Type ,out string UnEquipItemID);
-
         if(string.IsNullOrEmpty(UnEquipItemID)) SetGridData(dragRow, dragCol, UnEquipItemID, 0);
         else
         {
+            playerInventory.AddItem(UnEquipItemID, 1);
             SetGridData(dragRow, dragCol, UnEquipItemID, 1);
         }
         OnSlotChangedAction?.Invoke();
@@ -67,8 +66,11 @@ public class PlayerInventoryGrid : MonoBehaviour
         ItemCatalogManager.Instance.TryGetItemData(dragItemID, out var data);
 
         GridData gridData = inventoryGrid[dropRow,DropCol];
-        SetGridData(dropRow, DropCol, dragItemID, 1);
+        playerInventory.AddItem(dragItemID, 1);
 
+        if(gridData.ItemID != null) playerInventory.RemoveItem(gridData.ItemID, 1);
+
+        SetGridData(dropRow, DropCol, dragItemID, 1);
         equipment.EquipItem(gridData.ItemID,data.Type ,out string _);
         OnSlotChangedAction?.Invoke();
     }

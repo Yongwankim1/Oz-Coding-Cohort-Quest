@@ -150,6 +150,8 @@ GameObject:
   - component: {fileID: 6753561064166572935}
   - component: {fileID: 3565588036131575032}
   - component: {fileID: 4567119072483805988}
+  - component: {fileID: 6673952602504465780}
+  - component: {fileID: 3284009628986517028}
   m_Layer: 5
   m_Name: slot
   m_TagString: Untagged
@@ -246,7 +248,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7aadce100c604684096639b9f87f7269, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  dropType: 2
+--- !u!114 &6673952602504465780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6250759976633799690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e5f863496dd64049b6f157ce73c55f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  inventorySlotUI: {fileID: 0}
+--- !u!114 &3284009628986517028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6250759976633799690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 0
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 6753561064166572935}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &7164755495218853432
 GameObject:
   m_ObjectHideFlags: 0
@@ -337,7 +395,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c4a7fef301d57c4aab0f3a4576637f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragAndDrop
-  dragType: 2
   inventorySlotUI: {fileID: 0}
 --- !u!225 &2647261513104261262
 CanvasGroup:

@@ -46,6 +46,15 @@ public class ItemCatalogManager : MonoBehaviour
         return false;
 
     }
+    public ItemType GetItemType(string itemID)
+    {
+        if (!IsRegisteredItem(itemID))
+        {
+            return ItemType.None;
+        }
+        
+        return registeredItemData[itemID].Type;
+    }
     public bool TryGetItemData(string itemID, out ItemData itemData)
     {
         itemData = default;

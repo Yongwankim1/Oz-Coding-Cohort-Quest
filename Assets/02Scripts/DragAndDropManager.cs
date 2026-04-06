@@ -21,8 +21,7 @@ public class DragAndDropManager : MonoBehaviour
     //public string DragItemID = string.Empty;
 
     [SerializeField] PlayerInventoryGrid inventoryGrid;
-    //[SerializeField] PlayerEquipment playerEquipment;
-    //[SerializeField] PlayerInventory playerInventory;
+    [SerializeField] PlayerInventory playerInventory;
     public string dragingItemID;
 
     
@@ -53,11 +52,18 @@ public class DragAndDropManager : MonoBehaviour
             //인벤토리에서 장착 후 인벤토리에서 삭제 장착되어 있던 장비 빠짐 빠진 장비 그리드에 다시 추가
             inventoryGrid.EquipItemID((int)DragingSlot.x, (int)DragingSlot.y, dragingItemID, CurrentSlotType);
         }
-        else if(DragType == DropType.Equip && DropType == DropType.Inventory)
+        else if (DragType == DropType.Equip && DropType == DropType.Inventory)
         {
             //장비창에서 인벤토리로 장착 해제 후 슬롯에 장비가 있으면 장비를 인벤토리에 장착
-            inventoryGrid.EquipItemID(dragingItemID,(int)DropSlot.x,(int)DropSlot.y);
+            inventoryGrid.EquipItemID(dragingItemID, (int)DropSlot.x, (int)DropSlot.y);
+            Debug.Log("장비에서 인벤토리");
         }
+        else if (DragType == DropType.Equip && DropType == DropType.Equip)
+        {
+            playerInventory.AddItem(dragingItemID, 1,out int restAmount);
+            Debug.Log("장비 우클릭");
+        }
+        Initialize();
     }
 
 
@@ -67,6 +73,9 @@ public class DragAndDropManager : MonoBehaviour
         DragingSlot = new Vector2(-1,-1);
         DropSlot = new Vector2(-1,-1);
         dragingItemID = string.Empty;
+        CurrentSlotType = 0;
+        DragType = 0;
+        DropType = 0;
     }
     //public void ItemSlotChanged()
     //{

@@ -25,8 +25,7 @@ public class EquipDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        //DragAndDropManager.Instance.DragItemID = equipmentSlotUI.CurrentItemID;
-        //DragAndDropManager.Instance.CurrentEquipSlot = equipmentSlotUI;
+        DragAndDropManager.Instance.dragingItemID = equipmentSlotUI.CurrentItemID;
         DragAndDropManager.Instance.DragType = DropType.Equip;
         previousParent = transform.parent;
 
