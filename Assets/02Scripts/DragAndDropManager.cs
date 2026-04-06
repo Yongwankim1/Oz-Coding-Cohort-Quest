@@ -9,18 +9,20 @@ public class DragAndDropManager : MonoBehaviour
 {
     public static DragAndDropManager Instance;
 
-    public DropType type = DropType.None;
+    public DropType Type = DropType.None;
+    public ItemType CurrentSlotType = ItemType.None;
 
-    public Vector2 dragingSlot = new Vector2(-1,-1);
-    public Vector2 dropSlot = new Vector2(-1,-1);
+    public Vector2 DragingSlot = new Vector2(-1,-1);
+    public Vector2 DropSlot = new Vector2(-1,-1);
 
-    public GridData dragData = new GridData();
-    public Sprite dragSprite;
-
+    public GridData DragData = new GridData();
+    public string DragItemID = string.Empty;
 
     [SerializeField] PlayerInventoryGrid inventoryGrid;
     [SerializeField] PlayerEquipment playerEquipment;
-    [SerializeField] PlayerInventory PlayerInventory;
+    [SerializeField] PlayerInventory playerInventory;
+
+    public EquipmentSlotUI CurrentEquipSlot;
     
     private void Awake()
     {
@@ -35,24 +37,49 @@ public class DragAndDropManager : MonoBehaviour
         }
         if(inventoryGrid == null) inventoryGrid = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventoryGrid>();
     }
-
+    void Initialize()
+    {
+        CurrentEquipSlot = null;
+        Type = DropType.None;
+        CurrentSlotType = ItemType.None;
+        DragingSlot = new Vector2(-1, -1);
+        DropSlot = new Vector2(-1, -1);
+        DragData = new GridData();
+        DragItemID = null;
+    }
     public void ItemSlotChanged()
     {
-        if (type == DropType.Inventory)
+        if (Type == DropType.Inventory)
         {
-            inventoryGrid.ChangeSlotItemId((int)dragingSlot.x, (int)dragingSlot.y, (int)dropSlot.x, (int)dropSlot.y);
+            if(DragingSlot.x >= 0 && DragingSlot.y >= 0 && DropSlot.x >= 0 && DropSlot.y >= 0 &&
+                DragingSlot.x < playerInventory.RowCount && DragingSlot.y < playerInventory.ColumnCount 
+                && DropSlot.x < playerInventory.RowCount && DropSlot.y < playerInventory.ColumnCount)
+            {
+                inventoryGrid.ChangeSlotItemId((int)DragingSlot.x, (int)DragingSlot.y, (int)DropSlot.x, (int)DropSlot.y);
+            }
             ///TODO:: 장비창에서 빼서 아이템에 슬롯에 넣어주는 코드도 추가해줘야함
+            if(!string.IsNullOrWhiteSpace(DragItemID))
+            {
+                inventoryGrid.ChangeSlotItemId(DragItemID, 1,(int)DropSlot.x, (int)DropSlot.y, out string itemID);
+                playerEquipment.UnEquipItem(itemID, CurrentEquipSlot);
+            }
         }
-        else if (type == DropType.Equip)
+        else if (Type == DropType.Equip)
         {
-            playerEquipment.EquipItem(dragData.ItemID);
-            PlayerInventory.RemoveItem(dragData.ItemID, dragData.Count, (int)dragingSlot.x, (int)dragingSlot.y);
-            ///TODO:: 아이템 추가해줘야함
-            ///예를 들어 아이템끼리 교환일때
+            ItemCatalogManager.Instance.TryGetItemData(DragData.ItemID, out ItemData itemData);
+            if (CurrentSlotType != itemData.Type)
+            {
+                Initialize();
+                return;
+            }
+            playerEquipment.EquipItem(DragData.ItemID, out string outItemID);
+            playerInventory.RemoveItem(DragData.ItemID, DragData.Count, (int)DragingSlot.x, (int)DragingSlot.y);
+            if (!string.IsNullOrEmpty(outItemID))
+            {
+                playerInventory.AddItem(outItemID, 1, out _);
+            }
         }
-        dragingSlot = new Vector2(-1, -1);
-        dropSlot = new Vector2(-1,- 1);
-        dragData = new GridData();
+        Initialize();
     }
 }
 // 인벤토리에서 아이템드래그 시작(데이터 담음) -> 장비칸에 드랍(드랍할 데이터 담음) -> 장비칸 기존 아이템 자리 바꿈

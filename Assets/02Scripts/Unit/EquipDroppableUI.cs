@@ -18,18 +18,20 @@ public class EquipDroppableUI : MonoBehaviour, IDropHandler, IPointerExitHandler
     }
     public void OnDrop(PointerEventData eventData)
     {
-        //DragAndDropManager.Instance.dropData = equipmentSlotUI.GridData;
+
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        DragAndDropManager.Instance.type = DropType.Equip;
+        DragAndDropManager.Instance.Type = DropType.Equip;
+        DragAndDropManager.Instance.CurrentSlotType = equipmentSlotUI.EquipType;
         myImage.color = Color.yellow;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        DragAndDropManager.Instance.type = DropType.None;
+        DragAndDropManager.Instance.Type = DropType.None;
+        DragAndDropManager.Instance.CurrentSlotType = ItemType.None;
         myImage.color = Color.white;
     }
 

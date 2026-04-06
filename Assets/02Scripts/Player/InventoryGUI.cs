@@ -17,7 +17,7 @@ public class InventoryGUI : MonoBehaviour
     private void Awake()
     {
         if (inventory == null)
-            inventory = GetComponent<PlayerInventory>();
+            inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();
 
         if (inventoryGrid == null && inventory != null)
             inventoryGrid = inventory.InventoryGrid;

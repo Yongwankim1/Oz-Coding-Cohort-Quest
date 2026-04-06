@@ -13,7 +13,12 @@ public class PlayerInventoryGrid : MonoBehaviour
     GridData[,] inventoryGrid = new GridData[0, 0];
     public GridData[,] InventoryGrid => inventoryGrid;
     public event Action OnSlotChangedAction;
-
+    [SerializeField] private PlayerInventory playerInventory;
+    private void Awake()
+    {
+        if(playerInventory == null)
+        playerInventory = GetComponent<PlayerInventory>();
+    }
     public void Initialzed(int row, int col)
     {
         inventoryGrid = new GridData[row, col];
@@ -23,8 +28,8 @@ public class PlayerInventoryGrid : MonoBehaviour
     /// </summary>
     public void ChangeSlotItemId(int row, int col, int changeRow, int changeCol)
     {
-        if(row < 0 || col < 0) return;
-        if (changeCol < 0 || changeRow < 0) return;
+        if(row < 0 || col < 0 || row > inventoryGrid.GetLength(0) - 1 || col > inventoryGrid.GetLength(1) - 1) return;
+        if (changeCol < 0 || changeRow < 0 || changeRow > inventoryGrid.GetLength(0) - 1 || changeCol > inventoryGrid.GetLength(1) - 1) return;
         GridData gridTargetData = inventoryGrid[row, col];
         GridData gridData = inventoryGrid[changeRow, changeCol];
 
@@ -33,6 +38,27 @@ public class PlayerInventoryGrid : MonoBehaviour
 
         OnSlotChangedAction?.Invoke();
     }
+
+    public void ChangeSlotItemId(string dragitemId,int amount ,int dropRow, int dropCol,out string itemID)
+    {
+        itemID = null;
+        if(dropRow < 0 || dropCol < 0 || dropRow > inventoryGrid.GetLength(0) - 1 || dropCol > inventoryGrid.GetLength(1)) return;
+        if(!ItemCatalogManager.Instance.TryGetItemData(dragitemId, out ItemData itemData))
+        {
+            return;
+        }
+        itemID = inventoryGrid[dropRow, dropCol].ItemID;
+        inventoryGrid[dropRow, dropCol].ItemID = itemData.ItemID;
+        inventoryGrid[dropRow, dropCol].MaxCount = itemData.MaxStack;
+        inventoryGrid[dropRow, dropCol].Count = amount;
+        if (!string.IsNullOrEmpty(itemID))
+        {
+            playerInventory.RemoveItem(itemID, 1);
+        }
+        playerInventory.AddItem(dragitemId,amount);
+        OnSlotChangedAction?.Invoke();
+    }
+
     public void SetRemoveItemGrid(string itemId,int amount,int row, int col)
     {
         if(string.IsNullOrEmpty(itemId)) return;
@@ -96,7 +122,6 @@ public class PlayerInventoryGrid : MonoBehaviour
                     return 0;
             }
         }
-
         if (amount > 0)
         {
             Debug.Log($"인벤토리가 가득 차서 {amount}개를 넣지 못했습니다.");

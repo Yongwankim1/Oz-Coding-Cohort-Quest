@@ -10,27 +10,44 @@ public class EquipmentSlotUI : MonoBehaviour
     [SerializeField] Image slotImage;
 
     [SerializeField] Image iconImage;
-    [SerializeField] ItemData itemData;
+    [SerializeField] string currentitemID;
+    
+    public ItemType EquipType => equipType;
+    public string CurrentItemID => currentitemID;
+
     private void Awake()
     {
         Initialize();
     }
 
-    void Initialize()
+    private void Initialize()
     {
         slotImage.sprite = noneEquipSlotSprite;
         iconImage.sprite = null;
         iconImage.gameObject.SetActive(false);
     }
-
-    public void DrawSlot(string itemID)
+    public void UnEquip()
     {
+        slotImage.sprite = noneEquipSlotSprite;
+        iconImage.sprite = null;
+        iconImage.gameObject.SetActive(false);
+        currentitemID = null;
+    }
+    public void DrawSlot(string itemID,out string currentitemID)
+    {
+        Debug.Log(itemID + "°¡ µé¾î¿È");
+        currentitemID = null;
+        string equipItemID = itemID;
+
         Initialize();
-        if (!ItemCatalogManager.Instance.TryGetItemData(itemID, out ItemData itemData))
+        
+        if (!ItemCatalogManager.Instance.TryGetItemData(equipItemID, out ItemData itemData))
         {
             return;
         }
-
+        currentitemID = this.currentitemID;
+        this.currentitemID = equipItemID;
+        slotImage.sprite = equipSlotSprite;
         iconImage.sprite = itemData.ItemIcon;
         iconImage.gameObject.SetActive(true);
     }

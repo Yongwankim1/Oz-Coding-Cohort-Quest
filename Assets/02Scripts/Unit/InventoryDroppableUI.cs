@@ -18,19 +18,19 @@ public class InventoryDroppableUI : MonoBehaviour, IPointerEnterHandler, IDropHa
     }
     public void OnDrop(PointerEventData eventData)
     {
-        DragAndDropManager.Instance.dropSlot.x = inventorySlotUI.Row;
-        DragAndDropManager.Instance.dropSlot.y = inventorySlotUI.Col;
+        DragAndDropManager.Instance.DropSlot.x = inventorySlotUI.Row;
+        DragAndDropManager.Instance.DropSlot.y = inventorySlotUI.Col;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        DragAndDropManager.Instance.type = DropType.Inventory;
+        DragAndDropManager.Instance.Type = DropType.Inventory;
         myImage.color = Color.yellow;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        DragAndDropManager.Instance.type = DropType.None;
+        DragAndDropManager.Instance.Type = DropType.None;
         myImage.color = Color.white;
     }
 

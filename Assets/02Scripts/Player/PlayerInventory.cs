@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -38,7 +39,13 @@ public class PlayerInventory : MonoBehaviour
     }
 
     private void RaiseItemChanged() => OnItemAmountChanged?.Invoke();
-
+    public void AddItem(string itemId, int amount)
+    {
+        if (!itemIdByCount.ContainsKey(itemId))
+            itemIdByCount.Add(itemId, amount);
+        else
+            IncreaseItemCount(itemId, amount);
+    }
     public bool AddItem(string itemID, int amount, out int restAmount)
     {
         restAmount = -1;
@@ -61,6 +68,10 @@ public class PlayerInventory : MonoBehaviour
 
         RaiseItemChanged();
         return true;
+    }
+    public void RemoveItem(string ItemID, int amount)
+    {
+        DecreaseItemCount(ItemID, amount);
     }
     public bool RemoveItem(string itemID, int amount,int row, int col)
     {
@@ -110,6 +121,9 @@ public class PlayerInventory : MonoBehaviour
             Debug.Log("아이템이 없습니다");
             return;
         }
-        Debug.Log($"{itemIdByCount.Count}개 있습니다");
+        foreach(var item in itemIdByCount)
+        {
+            Debug.Log(item.Key +"가 " + item.Value +"있습니다");
+        }
     }
 }

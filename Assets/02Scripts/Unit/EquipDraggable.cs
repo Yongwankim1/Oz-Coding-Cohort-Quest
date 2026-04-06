@@ -25,6 +25,8 @@ public class EquipDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        DragAndDropManager.Instance.DragItemID = equipmentSlotUI.CurrentItemID;
+        DragAndDropManager.Instance.CurrentEquipSlot = equipmentSlotUI;
         previousParent = transform.parent;
 
         transform.SetParent(canvas);
@@ -46,5 +48,6 @@ public class EquipDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
         canvasGroup.alpha = 1.0f;
         canvasGroup.blocksRaycasts = true;
+        DragAndDropManager.Instance.ItemSlotChanged();
     }
 }

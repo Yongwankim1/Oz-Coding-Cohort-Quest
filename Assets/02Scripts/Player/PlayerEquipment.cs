@@ -30,22 +30,23 @@ public class PlayerEquipment : MonoBehaviour
         weaponData = new ItemData();
     }
 
-    public void EquipItem(string itemID)
+    public void UnEquipItem(string itemID, EquipmentSlotUI slot)
     {
-        if(!ItemCatalogManager.Instance.TryGetItemData(itemID, out ItemData itemData))
-        {
-            return;
-        }
-        ItemType type = itemData.Type;
+        slot.UnEquip();
+    }
+    public void EquipItem(string itemID, out string outItemID)
+    {
+        outItemID = null;
 
-        switch (type)
+        ItemCatalogManager.Instance.TryGetItemData(itemID, out ItemData itemData);
+        Debug.Log(itemID + "교환 시도");
+        switch (DragAndDropManager.Instance.CurrentSlotType)
         {
-            case ItemType.Weapon: weaponData = itemData; weaponSlot.DrawSlot(itemID); break;
-            case ItemType.Head: helmetData = itemData; helmetSlot.DrawSlot(itemID); break;
-            case ItemType.Body: bodyData = itemData; bodySlot.DrawSlot(itemID); break;
-            case ItemType.Shoes: shoesData = itemData; shoesSlot.DrawSlot(itemID); break; 
+            case ItemType.Weapon: weaponData = itemData; weaponSlot.DrawSlot(itemID, out outItemID); break;
+            case ItemType.Head: helmetData = itemData; helmetSlot.DrawSlot(itemID, out outItemID); break;
+            case ItemType.Body: bodyData = itemData; bodySlot.DrawSlot(itemID, out outItemID); break;
+            case ItemType.Shoes: shoesData = itemData; shoesSlot.DrawSlot(itemID, out outItemID); break;
             default: break;
         }
     }
-
 }
