@@ -32,6 +32,9 @@ public class PlayerInputReader : MonoBehaviour
 
     public float MouseAxisX { get; private set; }
     public float MouseAxisY { get; private set; }
+
+    public bool CanMove { get; set; }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
@@ -63,8 +66,14 @@ public class PlayerInputReader : MonoBehaviour
     void Update()
     {
         moveVector2D = moveAction.ReadValue<Vector2>().normalized;
-        mouseVector2D = mouseAction.ReadValue<Vector2>();
-
+        if (CanMove)
+        {
+            mouseVector2D = mouseAction.ReadValue<Vector2>();
+        }
+        else
+        {
+            mouseVector2D = Vector2.zero;
+        }
         Horizontal = moveVector2D.x;
         Vertical = moveVector2D.y;
 

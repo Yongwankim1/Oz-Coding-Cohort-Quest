@@ -45,5 +45,9 @@ public class PlayerEquipment : MonoBehaviour
         {
             UnEquipItemID = null;
         }
+        float weaponValue = weaponSlot.ItemValue;
+        float hpValue = helmetSlot.ItemValue + bodySlot.ItemValue + shoesSlot.ItemValue;
+        playerAttack.EquipWeapon(weaponValue);
+        playerHP.EquipItem((int) hpValue);
     }
 }

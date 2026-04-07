@@ -12,13 +12,10 @@ public class DragAndDropManager : MonoBehaviour
     public DropType DragType = DropType.None;
     public DropType DropType = DropType.None;
 
-
     public Vector2 DragingSlot = new Vector2(-1,-1);
     public Vector2 DropSlot = new Vector2(-1,-1);
 
     public ItemType CurrentSlotType = ItemType.None;
-    //public GridData DragData = new GridData();
-    //public string DragItemID = string.Empty;
 
     [SerializeField] PlayerInventoryGrid inventoryGrid;
     [SerializeField] PlayerInventory playerInventory;

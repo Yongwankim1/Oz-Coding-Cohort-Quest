@@ -21,12 +21,40 @@ public class PlayerInventory : MonoBehaviour
     public Dictionary<string, int> ItemIdByCount => itemIdByCount;
 
     public event Action OnItemAmountChanged;
+    [Header("inventoryUI")]
+    [SerializeField] private GameObject inventoryPanel;
+    [Header("EquipmentPanel")]
+    [SerializeField] private GameObject equipmentPanel;
 
     private void Awake()
     {
         Init();
     }
+    private void Update()
+    {
+        if (inputReader.IsInventoryTogglePerformedThisFrame)
+        {
+            InventoryToggle();
+        }
+    }
+    private void InventoryToggle()
+    {
+        inventoryPanel.SetActive(!inventoryPanel.activeSelf);
+        equipmentPanel.SetActive(!equipmentPanel.activeSelf);
+        inputReader.CanMove = !inventoryPanel.activeSelf;
 
+        if (!inventoryPanel.activeSelf)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            OnItemAmountChanged();
+        }
+    }
     private void Init()
     {
         if (inputReader == null) inputReader = GetComponent<PlayerInputReader>();
@@ -73,24 +101,7 @@ public class PlayerInventory : MonoBehaviour
     {
         DecreaseItemCount(ItemID, amount);
     }
-    public bool RemoveItem(string itemID, int amount,int row, int col)
-    {
-        if (amount <= 0) return false;
-        if(string.IsNullOrWhiteSpace(itemID)) return false;
 
-        if (!itemIdByCount.ContainsKey(itemID))
-        {
-            return false;
-        }
-        else
-        {
-            DecreaseItemCount(itemID, amount);
-        }
-        inventoryGrid.SetRemoveItemGrid(itemID,amount,row,col);
-        RaiseItemChanged();
-        return true;
-
-    }
     private void IncreaseItemCount(string itemId, int amount)
     {
         if (amount <= 0) return;
@@ -101,16 +112,23 @@ public class PlayerInventory : MonoBehaviour
 
     private void DecreaseItemCount(string itemId, int amount)
     {
+        if (string.IsNullOrWhiteSpace(itemId)) return;
         if (amount <= 0) return;
 
-        if (itemIdByCount.TryGetValue(itemId, out int value))
+        if (!itemIdByCount.TryGetValue(itemId, out int currentValue))
         {
-            int newValue = value - amount;
+            return;
+        }
 
-            if (newValue <= 0)
-                itemIdByCount.Remove(itemId);
-            else
-                itemIdByCount[itemId] = newValue;
+        int newValue = currentValue - amount;
+
+        if (newValue <= 0)
+        {
+            itemIdByCount.Remove(itemId);
+        }
+        else
+        {
+            itemIdByCount[itemId] = newValue;
         }
     }
     [ContextMenu("printItem")]

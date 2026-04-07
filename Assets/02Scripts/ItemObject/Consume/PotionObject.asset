@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemObject
   itemData:
     Type: 5
-    equipType: 0
     ItemID: potion01
     DisplayName: Potion
     Description: player HP heal
     MaxStack: 5
     ItemIcon: {fileID: 1978243232, guid: b6ac4e56df0ec194aae04b35fb3f5f67, type: 3}
+    Value: 20

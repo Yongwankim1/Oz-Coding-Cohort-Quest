@@ -156,6 +156,24 @@ public class PlayerInventoryGrid : MonoBehaviour
         return amount;
     }
 
+    public void RemoveItem(int row, int col, int amount)
+    {
+        GridData gridData = inventoryGrid[row,col];
+        if (gridData.Count - amount < 0)
+        {
+            Debug.Log("잘못된 값이 들어왔습니다");
+            return;
+        }
+        gridData.Count -= amount;
+        if(gridData.Count <= 0)
+        {
+            gridData = new GridData();
+        }
+        inventoryGrid[row, col] = gridData;
+        playerInventory.RemoveItem(gridData.ItemID,amount);
+        OnSlotChangedAction?.Invoke();
+    }
+
     [ContextMenu("PrintItemGrid")]
     private void PrintItemGrid()
     {
@@ -165,7 +183,7 @@ public class PlayerInventoryGrid : MonoBehaviour
         {
             for (int row = 0; row < inventoryGrid.GetLength(0); row++)
             {
-                itemDebug += $"[{inventoryGrid[row, col].ItemID}]\t";
+                itemDebug += $"[{inventoryGrid[row, col].ItemID}: {inventoryGrid[row,col].Count}]\t";
             }
             Debug.Log(itemDebug);
             itemDebug = string.Empty;

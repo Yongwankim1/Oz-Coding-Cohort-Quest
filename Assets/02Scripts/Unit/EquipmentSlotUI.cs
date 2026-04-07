@@ -10,7 +10,7 @@ public class EquipmentSlotUI : MonoBehaviour
 
     [SerializeField] Image iconImage;
     [SerializeField] string currentitemID;
-    
+    public float ItemValue { get; private set; }
     public ItemType EquipType => equipType;
     public string CurrentItemID => currentitemID;
 
@@ -24,6 +24,7 @@ public class EquipmentSlotUI : MonoBehaviour
         slotImage.sprite = noneEquipSlotSprite;
         iconImage.sprite = null;
         iconImage.gameObject.SetActive(false);
+        ItemValue = 0;
     }
 
     public void EquipItem(string equipItemID, out string unEquipItemID)
@@ -36,6 +37,7 @@ public class EquipmentSlotUI : MonoBehaviour
         {
             return;
         }
+        ItemValue = data.Value;
         iconImage.sprite = data.ItemIcon;
         slotImage.sprite = equipSlotSprite;
         iconImage.gameObject.SetActive(true);

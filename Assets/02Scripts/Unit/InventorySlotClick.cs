@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -30,6 +31,10 @@ public class InventorySlotClick : MonoBehaviour, IPointerClickHandler
             ItemType itemType = ItemCatalogManager.Instance.GetItemType(inventorySlotUI.ItemID);
             if (itemType == ItemType.HPPotion)
             {
+                if (!UsePotion(inventorySlotUI.ItemID))
+                {
+                    Debug.LogWarning("아이템이 사용되지 않음");
+                }
                 ///TODO:: 포션 사용 메서드 구현
                 return;
             }
@@ -48,6 +53,23 @@ public class InventorySlotClick : MonoBehaviour, IPointerClickHandler
             Debug.Log("좌클릭 감지");
         }
     }
+    private bool UsePotion(string itemID)
+    {
+        if(!ItemCatalogManager.Instance.TryGetItemData(itemID, out var data))
+        {
+            return false;
+        }
 
+        PlayerInventoryGrid playerInventoryGrid = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventoryGrid>();
+        PlayerHP playerHP = playerInventoryGrid.GetComponent<PlayerHP>();
+        if (playerHP.CurrentHP == playerHP.MaxHP)
+        {
+            Debug.Log("체력이 가득 차 있습니다");
+            return false;
+        }
+        playerInventoryGrid.RemoveItem(inventorySlotUI.Row, inventorySlotUI.Col, 1);
+        playerHP.Heal(data.Value);
+        return true;
+    }
 
 }

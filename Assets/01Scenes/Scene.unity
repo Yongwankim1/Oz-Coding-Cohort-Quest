@@ -282,15 +282,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 226ecc96e1a4bdc428a0e0e9173f76a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  Type: 0
-  CurrentSlotType: 0
+  DragType: 0
+  DropType: 0
   DragingSlot: {x: -1, y: -1}
   DropSlot: {x: -1, y: -1}
-  DragItemID: 
+  CurrentSlotType: 0
   inventoryGrid: {fileID: 5866666020035417761}
-  playerEquipment: {fileID: 5866666020035417760}
   playerInventory: {fileID: 5866666020035417762}
-  CurrentEquipSlot: {fileID: 0}
+  dragingItemID: 
 --- !u!4 &45554030
 Transform:
   m_ObjectHideFlags: 0
@@ -1055,6 +1054,8 @@ GameObject:
   - component: {fileID: 277590328}
   - component: {fileID: 277590327}
   - component: {fileID: 277590330}
+  - component: {fileID: 277590332}
+  - component: {fileID: 277590331}
   m_Layer: 5
   m_Name: HeadSlot
   m_TagString: Untagged
@@ -1150,6 +1151,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86158b9e21aaa39458bec4ed39c9ccc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+--- !u!114 &277590331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277590325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 0
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 277590328}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &277590332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277590325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 811bac0760409f143ab11556ce281e9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EquipSlotClickUI
+  slotUI: {fileID: 0}
 --- !u!1 &282712086
 GameObject:
   m_ObjectHideFlags: 0
@@ -3232,6 +3290,7 @@ GameObject:
   - component: {fileID: 645511200}
   - component: {fileID: 645511202}
   - component: {fileID: 645511203}
+  - component: {fileID: 645511204}
   m_Layer: 5
   m_Name: BodySlot
   m_TagString: Untagged
@@ -3327,6 +3386,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86158b9e21aaa39458bec4ed39c9ccc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquipDroppableUI
+--- !u!114 &645511204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 645511198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 811bac0760409f143ab11556ce281e9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EquipSlotClick
+  slotUI: {fileID: 0}
 --- !u!1 &656013514
 GameObject:
   m_ObjectHideFlags: 0
@@ -3371,6 +3443,7 @@ GameObject:
   - component: {fileID: 666151699}
   - component: {fileID: 666151701}
   - component: {fileID: 666151702}
+  - component: {fileID: 666151703}
   m_Layer: 5
   m_Name: ShoesSlot
   m_TagString: Untagged
@@ -3466,6 +3539,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86158b9e21aaa39458bec4ed39c9ccc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquipDroppableUI
+--- !u!114 &666151703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 666151697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 811bac0760409f143ab11556ce281e9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EquipSlotClick
+  slotUI: {fileID: 0}
 --- !u!1 &677567598
 GameObject:
   m_ObjectHideFlags: 0
@@ -3972,6 +4058,7 @@ GameObject:
   - component: {fileID: 849970094}
   - component: {fileID: 849970096}
   - component: {fileID: 849970097}
+  - component: {fileID: 849970098}
   m_Layer: 5
   m_Name: WeaponSlot
   m_TagString: Untagged
@@ -4067,6 +4154,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86158b9e21aaa39458bec4ed39c9ccc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquipDroppableUI
+--- !u!114 &849970098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 849970092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 811bac0760409f143ab11556ce281e9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EquipSlotClick
+  slotUI: {fileID: 0}
 --- !u!1 &870796087
 GameObject:
   m_ObjectHideFlags: 0
@@ -10632,38 +10732,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9ea86c1a923f514894857e869de9618, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  helmetData:
-    Type: 0
-    ItemID: 
-    DisplayName: 
-    Description: 
-    MaxStack: 0
-    ItemIcon: {fileID: 0}
-    Value: 0
-  bodyData:
-    Type: 0
-    ItemID: 
-    DisplayName: 
-    Description: 
-    MaxStack: 0
-    ItemIcon: {fileID: 0}
-    Value: 0
-  shoesData:
-    Type: 0
-    ItemID: 
-    DisplayName: 
-    Description: 
-    MaxStack: 0
-    ItemIcon: {fileID: 0}
-    Value: 0
-  weaponData:
-    Type: 0
-    ItemID: 
-    DisplayName: 
-    Description: 
-    MaxStack: 0
-    ItemIcon: {fileID: 0}
-    Value: 0
   helmetSlot: {fileID: 277590327}
   bodySlot: {fileID: 645511202}
   shoesSlot: {fileID: 666151701}
@@ -10683,6 +10751,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   playerInventory: {fileID: 0}
+  equipment: {fileID: 0}
 --- !u!114 &5866666020035417762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10699,6 +10768,8 @@ MonoBehaviour:
   inventoryGrid: {fileID: 5866666020035417761}
   rowCount: 5
   columnCount: 10
+  inventoryPanel: {fileID: 1806247137}
+  equipmentPanel: {fileID: 1849816171}
 --- !u!114 &5866666020035417763
 MonoBehaviour:
   m_ObjectHideFlags: 0
