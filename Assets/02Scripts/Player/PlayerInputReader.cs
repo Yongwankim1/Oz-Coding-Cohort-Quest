@@ -33,7 +33,7 @@ public class PlayerInputReader : MonoBehaviour
     public float MouseAxisX { get; private set; }
     public float MouseAxisY { get; private set; }
 
-    public bool CanMove { get; set; }
+    public bool CanMove { get; set; } = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
