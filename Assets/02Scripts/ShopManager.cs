@@ -34,6 +34,8 @@ public class ShopManager : MonoBehaviour,IInteractable
     {
         if (!collider.CompareTag("Player")) return;
         shopGUI.gameObject.SetActive(false);
+
+        collider.GetComponent<PlayerInteract>().RemoveInteract(this);
     }
     public void Interact(PlayerInteract player)
     {

@@ -1683,8 +1683,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHP
   currentHP: 0
-  maxHP: 1000
-  defaultMaxHP: 0
+  maxHP: 0
+  defaultMaxHP: 1000
   equipHP: 0
   m_animator: {fileID: 0}
   hpBar: {fileID: 1511191257}
@@ -3660,7 +3660,7 @@ MonoBehaviour:
   inputReader: {fileID: 5866666020035417763}
   m_animator: {fileID: 0}
   AttackCount: 0
-  defaultDamage: 0
+  defaultDamage: 15
   currentDamage: 0
   equipDamage: 0
   weapon: {fileID: 1340921147}
@@ -19442,8 +19442,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHP
   currentHP: 0
-  maxHP: 1000
-  defaultMaxHP: 0
+  maxHP: 0
+  defaultMaxHP: 1000
   equipHP: 0
   m_animator: {fileID: 0}
   hpBar: {fileID: 731502421}
