@@ -59,6 +59,12 @@ public class InventoryGUI : MonoBehaviour
             inventory.OnItemAmountChanged += ReDrawAllUI;
         if(inventoryGrid != null)
             inventoryGrid.OnSlotChangedAction += ReDrawAllUI;
+        if(inventory.TryGetComponent(out PlayerInputReader inputReader))
+        {
+            inputReader.CanMove = false;
+        }
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     private void OnDisable()
@@ -67,6 +73,12 @@ public class InventoryGUI : MonoBehaviour
             inventory.OnItemAmountChanged -= ReDrawAllUI;
         if (inventoryGrid != null)
             inventoryGrid.OnSlotChangedAction -= ReDrawAllUI;
+        if (inventory.TryGetComponent(out PlayerInputReader inputReader))
+        {
+            inputReader.CanMove = true;
+        }
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void ReDrawAllUI()
