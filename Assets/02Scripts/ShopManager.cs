@@ -7,8 +7,34 @@ public class ShopManager : MonoBehaviour,IInteractable
     [SerializeField] PlayerInventory inventory;
     [SerializeField] ShopItemTable itemTable;
     [SerializeField] float orderCoolDown = 0.8f;
+
     private float timer;
     private float nextTimer = -999f;
+
+    private void Awake()
+    {
+
+        if (shopGUI == null)
+        {
+            Debug.LogWarning("shopGUI 참조 안됨");
+            shopGUI = GameObject.Find("ShopPanel").GetComponent<ShopGUI>();
+        }
+        if (itemTable == null)
+        {
+            Debug.LogWarning("ShopItemTable 참조 안됨");
+            itemTable = GetComponent<ShopItemTable>();
+        }
+    }
+    void Update()
+    {
+        timer = Time.time;
+    }
+
+    void OnTriggerExit(Collider collider)
+    {
+        if (!collider.CompareTag("Player")) return;
+        shopGUI.gameObject.SetActive(false);
+    }
     public void Interact(PlayerInteract player)
     {
         if (player == null) return;
@@ -44,24 +70,5 @@ public class ShopManager : MonoBehaviour,IInteractable
                 Debug.Log("구매 실패");
             }
         }
-    }
-
-    private void Awake()
-    {
-        if(shopGUI == null)
-        {
-            Debug.LogWarning("shopGUI 참조 안됨");
-            shopGUI = GameObject.Find("ShopPanel").GetComponent<ShopGUI>();
-        }
-        if(itemTable == null)
-        {
-            Debug.LogWarning("ShopItemTable 참조 안됨");
-            itemTable = GetComponent<ShopItemTable>();
-        }
-    }
-
-    void Update()
-    {
-        timer = Time.time;
     }
 }
