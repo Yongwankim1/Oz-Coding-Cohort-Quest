@@ -26,6 +26,9 @@ public class PlayerInventory : MonoBehaviour
     [Header("EquipmentPanel")]
     [SerializeField] private GameObject equipmentPanel;
 
+    [SerializeField] private int gold;
+    public int Gold { get { return gold; } set { gold = value; } }
+
     private void Awake()
     {
         Init();
@@ -131,6 +134,24 @@ public class PlayerInventory : MonoBehaviour
             itemIdByCount[itemId] = newValue;
         }
     }
+
+    public bool TrySpendGold(int amount)
+    {
+        if(amount < 0) return false;
+        if(gold - amount < 0) return false;
+
+        gold -= amount;
+        OnItemAmountChanged?.Invoke();
+        return true;
+    }
+    public void AddGold(int amount)
+    {
+        if(amount <= 0) return;
+
+        gold += amount; 
+        OnItemAmountChanged?.Invoke();
+    }
+
     [ContextMenu("printItem")]
     private void PrintItemIdByCount()
     {

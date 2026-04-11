@@ -11,6 +11,7 @@ public class PlayerInputReader : MonoBehaviour
     private InputAction mouseAction;
     private InputAction interactAction;
     private InputAction inventoryAction;
+    private InputAction attackAction;
 
     [Header("액션 이름(동일)")]
     [SerializeField] 
@@ -21,12 +22,15 @@ public class PlayerInputReader : MonoBehaviour
     private string interactName = "Interact";
     [SerializeField]
     private string inventoryName = "InventoryToggle";
+    [SerializeField]
+    private string attackName = "Attack";
 
     private Vector2 moveVector2D;
     private Vector2 mouseVector2D;
 
     public bool IsInteractPerformedThisFrame {  get; private set; }
     public bool IsInventoryTogglePerformedThisFrame { get; private set; }
+    public bool IsAttackPerformedThisFrame { get; private set; }
     public float Horizontal {  get; private set; }
     public float Vertical { get; private set; }
 
@@ -49,6 +53,7 @@ public class PlayerInputReader : MonoBehaviour
         mouseAction = FindAction(mouseName);
         interactAction = FindAction(interactName);
         inventoryAction = FindAction(inventoryName);
+        attackAction = FindAction(attackName);
     }
 
     private InputAction FindAction(string actionName)
@@ -65,13 +70,16 @@ public class PlayerInputReader : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        moveVector2D = moveAction.ReadValue<Vector2>().normalized;
         if (CanMove)
         {
+            moveVector2D = moveAction.ReadValue<Vector2>().normalized;
             mouseVector2D = mouseAction.ReadValue<Vector2>();
+            IsAttackPerformedThisFrame = attackAction != null && attackAction.WasPerformedThisFrame();
         }
         else
         {
+            moveVector2D = Vector2.zero;
+            IsAttackPerformedThisFrame = false;
             mouseVector2D = Vector2.zero;
         }
         Horizontal = moveVector2D.x;

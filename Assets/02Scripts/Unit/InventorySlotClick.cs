@@ -5,47 +5,27 @@ using UnityEngine.EventSystems;
 public class InventorySlotClick : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] InventorySlotUI inventorySlotUI;
-
+    [SerializeField] PlayerHP playerHP;
+    [SerializeField] PlayerInventoryGrid playerInventoryGrid;
     void Awake()
     {
         if(inventorySlotUI == null)
             inventorySlotUI = GetComponent<InventorySlotUI>();
+        if (playerInventoryGrid == null)
+            playerInventoryGrid = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventoryGrid>();
+        if (playerHP == null) playerHP = playerInventoryGrid.GetComponent<PlayerHP>();
+    }
 
-    }
-    private DropType GetDropType()
-    {
-        ItemType itemType = ItemCatalogManager.Instance.GetItemType(inventorySlotUI.ItemID);
-        switch (itemType)
-        {
-            case ItemType.Body: return DropType.Equip;
-            case ItemType.Head: return DropType.Equip;
-            case ItemType.Shoes: return DropType.Equip;
-            case ItemType.Weapon: return DropType.Equip;
-            default: return DropType.None;
-        }
-    }
     public void OnPointerClick(PointerEventData eventData)
     {
         if(eventData.button == PointerEventData.InputButton.Right)
         {
-            ItemType itemType = ItemCatalogManager.Instance.GetItemType(inventorySlotUI.ItemID);
-            if (itemType == ItemType.HPPotion)
-            {
-                if (!UsePotion(inventorySlotUI.ItemID))
-                {
-                    Debug.LogWarning("아이템이 사용되지 않음");
-                }
-                ///TODO:: 포션 사용 메서드 구현
-                return;
-            }
-            Debug.Log("우클릭 감지");
             if (inventorySlotUI.ItemID == null) return;
-            DragAndDropManager.Instance.DragType = DropType.Inventory;
-            DragAndDropManager.Instance.DropType = GetDropType();
-            DragAndDropManager.Instance.DragingSlot = new Vector2(inventorySlotUI.Row,inventorySlotUI.Col);
-            DragAndDropManager.Instance.dragingItemID = inventorySlotUI.ItemID;
-            DragAndDropManager.Instance.CurrentSlotType = ItemCatalogManager.Instance.GetItemType(inventorySlotUI.ItemID);
-            DragAndDropManager.Instance.ItemSlotChanged();
+            //if(ItemCatalogManager.Instance.TryGetItemData(inventorySlotUI.ItemID, out ItemData itemData))
+            if (!ItemCatalogManager.Instance.TryGetItemClass(inventorySlotUI.ItemID, out var itemClass)) return;
+            itemClass.Use(playerInventoryGrid, inventorySlotUI);
+            return;
+
         }
         else if(eventData.button == PointerEventData.InputButton.Left)
         {
@@ -59,9 +39,10 @@ public class InventorySlotClick : MonoBehaviour, IPointerClickHandler
         {
             return false;
         }
+        if(playerInventoryGrid == null)
+            playerInventoryGrid = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventoryGrid>();
+        if (playerHP == null) playerHP = playerInventoryGrid.GetComponent<PlayerHP>();
 
-        PlayerInventoryGrid playerInventoryGrid = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventoryGrid>();
-        PlayerHP playerHP = playerInventoryGrid.GetComponent<PlayerHP>();
         if (playerHP.CurrentHP == playerHP.MaxHP)
         {
             Debug.Log("체력이 가득 차 있습니다");

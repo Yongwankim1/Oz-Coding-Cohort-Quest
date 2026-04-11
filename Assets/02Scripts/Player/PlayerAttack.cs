@@ -4,8 +4,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerAttack : MonoBehaviour
 {
+    [SerializeField] PlayerInputReader inputReader;
     [SerializeField] Animator m_animator;
-    [SerializeField] InputAction mouseAttack;
     [SerializeField] int AttackCount = 0;
 
     [SerializeField] float defaultDamage = 0;
@@ -19,9 +19,11 @@ public class PlayerAttack : MonoBehaviour
     }
     void Initialize()
     {
+        if(inputReader == null)
+            inputReader = GetComponent<PlayerInputReader>();
+        if(m_animator == null)
+            m_animator = GetComponent<Animator>();
         currentDamage = defaultDamage;
-        m_animator = GetComponent<Animator>();
-        mouseAttack.Enable();
     }
     public void EquipWeapon(float amount)
     {
@@ -30,14 +32,12 @@ public class PlayerAttack : MonoBehaviour
 
     private void Update()
     {
-        if (mouseAttack.WasPerformedThisFrame())
-        {
-            AttackRotation();
-            DefalutAttack();
-        }
+        AttackRotation();
+        DefalutAttack();
     }
     void AttackRotation()
     {
+        if (!inputReader.IsAttackPerformedThisFrame) return;
         Transform carmeraTransform = Camera.main.transform;
         Vector3 forward = carmeraTransform.forward;
         forward.y = 0f;
@@ -50,6 +50,7 @@ public class PlayerAttack : MonoBehaviour
     }
     void DefalutAttack()
     {
+        if (!inputReader.IsAttackPerformedThisFrame) return;
         m_animator.SetTrigger("Attack");
         m_animator.SetInteger("AttackCount",AttackCount);
     }

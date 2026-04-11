@@ -42,45 +42,4 @@ public class EquipmentSlotUI : MonoBehaviour
         slotImage.sprite = equipSlotSprite;
         iconImage.gameObject.SetActive(true);
     }
-    //public void ChangeEquip(string itemID)
-    //{
-    //    currentitemID = null;
-    //    string equipItemID = itemID;
-
-    //    Initialize();
-
-    //    if (!ItemCatalogManager.Instance.TryGetItemData(equipItemID, out ItemData itemData))
-    //    {
-    //        return;
-    //    }
-    //    currentitemID = equipItemID;
-    //    slotImage.sprite = equipSlotSprite;
-    //    iconImage.sprite = itemData.ItemIcon;
-    //    iconImage.gameObject.SetActive(true);
-    //}
-    //public void UnEquip()
-    //{
-    //    slotImage.sprite = noneEquipSlotSprite;
-    //    iconImage.sprite = null;
-    //    iconImage.gameObject.SetActive(false);
-    //    currentitemID = null;
-    //}
-    //public void DrawSlot(string itemID,out string currentitemID)
-    //{
-    //    Debug.Log(itemID + "°¡ µé¾î¿È");
-    //    currentitemID = null;
-    //    string equipItemID = itemID;
-
-    //    Initialize();
-        
-    //    if (!ItemCatalogManager.Instance.TryGetItemData(equipItemID, out ItemData itemData))
-    //    {
-    //        return;
-    //    }
-    //    currentitemID = this.currentitemID;
-    //    this.currentitemID = equipItemID;
-    //    slotImage.sprite = equipSlotSprite;
-    //    iconImage.sprite = itemData.ItemIcon;
-    //    iconImage.gameObject.SetActive(true);
-    //}
 }

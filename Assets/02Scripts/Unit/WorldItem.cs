@@ -18,8 +18,6 @@ public class WorldItem : MonoBehaviour, IInteractable
             itemAmount = restAmount;
             gameObject.SetActive(restAmount > 0);
         }
-
-
-        //Destroy(gameObject);
+        player.RemoveInteract(this);
     }
 }

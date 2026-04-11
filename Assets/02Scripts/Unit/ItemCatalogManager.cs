@@ -8,6 +8,7 @@ public class ItemCatalogManager : MonoBehaviour
     [SerializeField] List<ItemObject> registeredItems = new List<ItemObject> ();
     //등록시킬 ItemID와 ItemData
     private Dictionary<string, ItemData> registeredItemData = new Dictionary<string, ItemData> ();
+    private Dictionary<string, ItemObject> registeredItemClass = new Dictionary<string, ItemObject> ();
 
     private void Awake()
     {
@@ -32,6 +33,7 @@ public class ItemCatalogManager : MonoBehaviour
         foreach (ItemObject item in registeredItems)
         {
             registeredItemData.Add(item.ItemData.ItemID, item.ItemData);
+            registeredItemClass.Add(item.ItemData.ItemID, item);
         }
     }
 
@@ -46,6 +48,7 @@ public class ItemCatalogManager : MonoBehaviour
         return false;
 
     }
+
     public ItemType GetItemType(string itemID)
     {
         if (!IsRegisteredItem(itemID))
@@ -64,6 +67,17 @@ public class ItemCatalogManager : MonoBehaviour
         if (registeredItemData.TryGetValue(itemID, out itemData))
             return true;
 
+        return false;
+    }
+
+    public bool TryGetItemClass(string itemID, out ItemObject itemClass)
+    {
+        itemClass = default;
+        if (string.IsNullOrWhiteSpace(itemID)) return false;
+        if(registeredItemClass.TryGetValue(itemID, out itemClass))
+        {
+            return true;
+        }
         return false;
     }
     public int GetMaxStack(string itemID)

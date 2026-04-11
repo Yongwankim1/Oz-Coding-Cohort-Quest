@@ -27,7 +27,6 @@ public class PlayerInteract : MonoBehaviour
             return;
         }
         IInteractable target = curInteractable[curInteractable.Count - 1];
-        curInteractable.RemoveAt(curInteractable.Count-1);
         if (target == null)
         {
             Debug.Log("상호작용 대상이 비어있음");
@@ -51,9 +50,12 @@ public class PlayerInteract : MonoBehaviour
         {
             return;
         }
-        if (curInteractable.Contains(target))
-        {
-            curInteractable.Remove(target);
-        }
+
+        curInteractable.Remove(target);
+
+    }
+    public void RemoveInteract(IInteractable interactable)
+    {
+        curInteractable.Remove(interactable);
     }
 }

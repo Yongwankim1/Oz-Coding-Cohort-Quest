@@ -48,6 +48,7 @@ public class HealingItem : MonoBehaviour, IInteractable
         characterHP.Heal((int)amount);
         //Destroy(gameObject);
         gameObject.SetActive(false);
+        player.RemoveInteract(this);
     }
     [ContextMenu("HealBuff")]
     void HealBuff(PlayerInteract player)

@@ -1,6 +1,7 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI.Table;
+
 
 public class InventoryGUI : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class InventoryGUI : MonoBehaviour
     [SerializeField] Transform parentTransform;
 
     [SerializeField] InventorySlotUI[,] inventorySlotUIs = new InventorySlotUI[0, 0];
+    [SerializeField] TextMeshProUGUI goldText;
 
     private void Awake()
     {
@@ -80,5 +82,6 @@ public class InventoryGUI : MonoBehaviour
                 inventorySlotUIs[row, col].DrawSlot(inventoryGrid.InventoryGrid[row, col], row, col);
             }
         }
+        goldText.text = inventory.Gold.ToString() + " G";
     }
 }
